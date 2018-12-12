@@ -11,6 +11,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(this, "MARCEL MERGE MERCH 10% idk if this w0rks..", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "MARCEL MERGE MERCH 10% idk if this w0rks.. 2.0000", Toast.LENGTH_SHORT).show();
     }
 }

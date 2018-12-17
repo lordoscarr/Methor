@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="Profile"/>
+
+        <item
+            android:id="@+id/nav_minigames"
+            android:icon="@drawable/ic_games"
+            android:title="Minigames"/>
+
+        <item
+            android:id="@+id/nav_highscore"
+            android:icon="@drawable/ic_highscore"
+            android:title="Highscore"/>
+
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:title="Map"/>
+    </group>
+
+</menu>

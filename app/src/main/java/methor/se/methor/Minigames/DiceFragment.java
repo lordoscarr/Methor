@@ -257,9 +257,5 @@ public class DiceFragment extends Fragment {
                 }
             }
         }
-
-
     }
-
-
 }

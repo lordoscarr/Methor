@@ -21,8 +21,26 @@ public class RPS {
         }
     }
 
-    public static Result simulateGame(Choice myChoice){
-        return getResult(myChoice, getOpponentChoice());
+    public static class GameInfo{
+        public final Result result;
+        public final Choice myChoice;
+        public final Choice opponentChoice;
+
+        public GameInfo(Result result, Choice myChoice, Choice opponentChoice){
+            this.result = result;
+            this.myChoice = myChoice;
+            this.opponentChoice = opponentChoice;
+        }
+
+        @Override
+        public String toString(){
+            return "Your choice: " + myChoice + ", Opponent choice: " + opponentChoice + ", Result: " + result;
+        }
+    }
+
+    public static GameInfo simulateGame(Choice myChoice){
+        Choice opponentChoice = getOpponentChoice();
+        return new GameInfo(getResult(myChoice, opponentChoice), myChoice, opponentChoice);
     }
 
     //Rock, paper, scissors. Best of three.

@@ -34,10 +34,8 @@ public class RPSFragment extends Fragment implements SensorEventListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rps, container, false);
         initializeComponents(view);
-        initializeSensors();
         return view;
     }
 
@@ -49,7 +47,8 @@ public class RPSFragment extends Fragment implements SensorEventListener {
         tvResult = view.findViewById(R.id.tvResult);
         tvResultAi = view.findViewById(R.id.tvResultAi);
 
-        myChoiceSpinner.setAdapter(new ArrayAdapter<RPS.Choice>(getActivity(), R.layout.support_simple_spinner_dropdown_item, RPS.Choice.values()));
+        myChoiceSpinner.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, RPS.Choice.values()));
+        myChoiceSpinner.setSelection(0);
         choiceLayout.setVisibility(View.GONE);
     }
 
@@ -62,10 +61,16 @@ public class RPSFragment extends Fragment implements SensorEventListener {
     private void onShake(){
         if(shakeCount < 3){
             tvInstructions.setText("Shake " + (3 - shakeCount) + " more times");
+            choiceLayout.setVisibility(View.GONE);
         }else {
             RPS.Choice myChoice = (RPS.Choice) myChoiceSpinner.getSelectedItem();
-            RPS.Result result = RPS.simulateGame(myChoice);
-            Log.d(this.getTag(), result.name());
+            RPS.GameInfo gameInfo = RPS.simulateGame(myChoice);
+            Log.d(this.getTag(), gameInfo.toString());
+            tvResult.setText(gameInfo.myChoice.getName());
+            tvResultAi.setText(gameInfo.opponentChoice.getName());
+            tvInstructions.setText(gameInfo.result.toString());
+            choiceLayout.setVisibility(View.VISIBLE);
+            shakeCount = 0;
         }
     }
 

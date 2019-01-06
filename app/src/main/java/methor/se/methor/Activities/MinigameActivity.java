@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import methor.se.methor.Minigames.DiceFragment;
 import methor.se.methor.Minigames.RPSFragment;
-import methor.se.methor.Minigames.RichGame.RichFragment;
+import methor.se.methor.Minigames.RichFragment;
 import methor.se.methor.Minigames.ShakeFragment;
 import methor.se.methor.Minigames.TTSFragment;
 import methor.se.methor.Minigames.TedFragment;

@@ -1,4 +1,4 @@
-package methor.se.methor.Minigames.RichGame;
+package methor.se.methor.Minigames;
 
 
 import android.graphics.Canvas;
@@ -14,10 +14,7 @@ import android.view.ViewGroup;
 
 import methor.se.methor.R;
 
-public class RichFragment extends Fragment implements SurfaceHolder.Callback {
-
-    private SurfaceView surfaceView;
-    private RenderThread renderThread;
+public class RichFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,30 +23,10 @@ public class RichFragment extends Fragment implements SurfaceHolder.Callback {
         View view = inflater.inflate(R.layout.fragment_rich, container, false);
         initializeComponents(view);
 
-        renderThread = new RenderThread(surfaceView.getHolder());
-        surfaceView.getHolder().addCallback(this);
-
         return view;
     }
 
     private void initializeComponents(View view){
-        surfaceView = view.findViewById(R.id.surfaceView);
-        surfaceView.setZOrderOnTop(true);
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-
-        renderThread.run();
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
 
     }
 }

@@ -2,8 +2,15 @@ package methor.se.methor.Activities;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,6 +24,9 @@ import methor.se.methor.Minigames.TedFragment;
 import methor.se.methor.R;
 
 public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     private Button rpsButton;
     private Button diceButton;
@@ -29,6 +39,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        setNavigationListener();
 
         Toast.makeText(this, "METHOR BIIITCHES", Toast.LENGTH_SHORT).show();
 
@@ -72,5 +93,38 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         }
+    }
+
+    private void setNavigationListener(){
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()){
+                    case R.id.nav_profile:
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_minigames:
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                    case R.id.nav_highscore:
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

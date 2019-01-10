@@ -29,13 +29,17 @@ public class RichFragment extends Fragment implements SensorEventListener{
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
-    private TextView tvTarget, tvScore, tvResult;
+    private TextView tvTarget, tvScore, tvResult, tvInstructions;
     private Button buttonStart;
 
     private final float TILT_THRESHOLD = 3;
-    private final float GAME_TIME = 10;
+    private final float GAME_TIME = 20;
+    private final float TILT_TIME = 0.1f * 1000000000;
 
-    private float timeRemaining = 0;
+    private float tiltTimer = 0;
+    private long lastTime = 0;
+    private boolean wasOnTarget = false;
+
     private boolean gameRunning = false;
     private CountDownTimer timer;
     private int score = 0;
@@ -52,7 +56,7 @@ public class RichFragment extends Fragment implements SensorEventListener{
     private final int DOWNLEFT = 5;
     private final int DOWNRIGHT = 6;
 
-    private final int[] targets = {1, 2, 4, 8, 9, 10, 5, 6};
+    private final int[] targets = {LEFT, RIGHT, DOWN, UP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
     private final String[] targetStrings = {"Left", "Right", "Down", "Up", "Up Left", "Up Right", "Down Left", "Down Right"};
 
     Random random;
@@ -72,6 +76,7 @@ public class RichFragment extends Fragment implements SensorEventListener{
         tvTarget = view.findViewById(R.id.tvTarget);
         tvScore = view.findViewById(R.id.tvScore);
         tvResult = view.findViewById(R.id.tvResult);
+        tvInstructions = view.findViewById(R.id.tvInstructions);
         buttonStart = view.findViewById(R.id.buttonStart);
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +98,7 @@ public class RichFragment extends Fragment implements SensorEventListener{
                                 tvTarget.setText("");
                                 score = 0;
                                 tvScore.setText(0+"");
+                                showInstructions(true);
                             }
                         });
                     }
@@ -100,12 +106,15 @@ public class RichFragment extends Fragment implements SensorEventListener{
                 randomizeTarget();
                 gameRunning = true;
                 buttonStart.setVisibility(View.INVISIBLE);
+                showInstructions(false);
             }
         });
         sensorManager = (SensorManager) getActivity().getSystemService(getContext().SENSOR_SERVICE);
         if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
+
+        tvInstructions.setText("Tilt the device towards the shown destination to score a point.\nScore as much as you can in " + GAME_TIME + " seconds.");
     }
 
     @Override
@@ -140,10 +149,21 @@ public class RichFragment extends Fragment implements SensorEventListener{
             }
 
             if(tilt == target){
-                score++;
-                tvScore.setText(score+"");
-                randomizeTarget();
+                if(wasOnTarget){
+                    long delta = event.timestamp - lastTime;
+                    tiltTimer += delta;
+                }
+                if(tiltTimer > TILT_TIME){
+                    score++;
+                    tvScore.setText(score+"");
+                    randomizeTarget();
+                    tiltTimer = 0;
+                }
+                wasOnTarget = true;
+            } else {
+                wasOnTarget = false;
             }
+            lastTime = event.timestamp;
         }
 
 
@@ -151,6 +171,9 @@ public class RichFragment extends Fragment implements SensorEventListener{
 
     private void randomizeTarget(){
         int index = random.nextInt(targets.length);
+        while(target == targets[index]){
+            index = random.nextInt(targets.length);
+        }
         target = targets[index];
         tvTarget.setText(targetStrings[index]);
     }
@@ -158,5 +181,13 @@ public class RichFragment extends Fragment implements SensorEventListener{
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private void showInstructions(boolean show){
+        if(show){
+            tvInstructions.setVisibility(View.VISIBLE);
+        } else {
+            tvInstructions.setVisibility(View.INVISIBLE);
+        }
     }
 }

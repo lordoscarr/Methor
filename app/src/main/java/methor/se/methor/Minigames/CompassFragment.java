@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import methor.se.methor.R;
 
-public class TedFragment extends Fragment {
+public class CompassFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -12,7 +12,7 @@ import methor.se.methor.Minigames.RPSFragment;
 import methor.se.methor.Minigames.RichFragment;
 import methor.se.methor.Minigames.ShakeFragment;
 import methor.se.methor.Minigames.TTSFragment;
-import methor.se.methor.Minigames.TedFragment;
+import methor.se.methor.Minigames.CompassFragment;
 import methor.se.methor.R;
 
 public class MinigameActivity extends AppCompatActivity {
@@ -42,7 +42,7 @@ public class MinigameActivity extends AppCompatActivity {
                 fragment = new ShakeFragment();
                 break;
             case "TED":
-                fragment = new TedFragment();
+                fragment = new CompassFragment();
                 break;
 
         }

@@ -1,6 +1,5 @@
 package methor.se.methor.Activities;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,12 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import methor.se.methor.Minigames.DiceFragment;
-import methor.se.methor.Minigames.RPSFragment;
-import methor.se.methor.Minigames.RichFragment;
-import methor.se.methor.Minigames.ShakeFragment;
-import methor.se.methor.Minigames.TTSFragment;
-import methor.se.methor.Minigames.TedFragment;
 import methor.se.methor.R;
 
 public class MainActivity extends AppCompatActivity {

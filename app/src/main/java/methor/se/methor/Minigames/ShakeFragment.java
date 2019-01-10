@@ -105,7 +105,7 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
         timer = new CountDownTimer(timeLeftInMillis, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
-                
+
                 timeLeftInMillis = millisUntilFinished;
                 int seconds = (int) (timeLeftInMillis / 1000) % 60;
                 String timeLeftFormatted = String.format(Locale.getDefault(), "%02d", seconds);

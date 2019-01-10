@@ -36,8 +36,8 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensorAccelerometer;
     private double shakeCounter = 0;
-    private int minRandomDouble = 1;
-    private int maxRandomDouble = 9;
+    private int minRandomDouble = 0;
+    private int maxRandomDouble = 4;
     private int randomShakePercantage = ThreadLocalRandom.current().nextInt(minRandomDouble, maxRandomDouble);
     private CountDownTimer timer;
     private boolean isTimerRunning;
@@ -105,6 +105,7 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
         timer = new CountDownTimer(timeLeftInMillis, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
+                
                 timeLeftInMillis = millisUntilFinished;
                 int seconds = (int) (timeLeftInMillis / 1000) % 60;
                 String timeLeftFormatted = String.format(Locale.getDefault(), "%02d", seconds);

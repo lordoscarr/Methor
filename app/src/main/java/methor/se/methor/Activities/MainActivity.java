@@ -1,6 +1,10 @@
 package methor.se.methor.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,6 +20,9 @@ import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import methor.se.methor.Fragments.GameMenuFragment;
 import methor.se.methor.Fragments.MapFragment;
 import methor.se.methor.R;
@@ -25,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+    private Fragment fragment;
+
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Log.d("MainActivity", "onNavigationItem: " + menuItem);
-                Fragment fragment = null;
+                fragment = null;
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_profile:
@@ -71,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_map:
                         menuItem.setChecked(true);
                         fragment = new MapFragment();
+
                         drawerLayout.closeDrawers();
                 }
 
@@ -85,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -95,4 +107,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

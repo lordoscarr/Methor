@@ -49,13 +49,13 @@
                 android:id="@+id/richButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="richy p" />
+                android:text="tilt" />
 
             <Button
                 android:id="@+id/tedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ted" />
+                android:text="Compass" />
 
         </LinearLayout>
     </FrameLayout>

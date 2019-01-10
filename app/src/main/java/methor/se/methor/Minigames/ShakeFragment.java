@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,18 +20,29 @@ import android.graphics.*;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
+
 import methor.se.methor.R;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class ShakeFragment extends Fragment implements SensorEventListener {
+    private static final long START_TIME_IN_MILLIS = 10000;
 
     public boolean isButtonClicked = false;
-    private TextView textViewProgressbar;
+    private TextView textViewProgressbar, textViewTimeLeft;
     private ProgressBar progressBar;
     private Button btnStart;
     private SensorManager sensorManager;
     private Sensor sensorAccelerometer;
-    private int shakeCounter = 0;
-    private int shakePercantage = 5;
+    private double shakeCounter = 0;
+    private int minRandomDouble = 0;
+    private int maxRandomDouble = 4;
+    private int randomShakePercantage = ThreadLocalRandom.current().nextInt(minRandomDouble, maxRandomDouble);
+    private CountDownTimer timer;
+    private boolean isTimerRunning;
+    private long timeLeftInMillis = START_TIME_IN_MILLIS;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -44,6 +56,7 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initializeComponents(View view) {
         textViewProgressbar = view.findViewById(R.id.textViewProgessbar);
+        textViewTimeLeft = view.findViewById(R.id.textViewShowTime);
         progressBar = view.findViewById(R.id.progressBar);
         btnStart = view.findViewById(R.id.btnStart);
         btnStart.setOnClickListener(new ButtonListener());
@@ -69,18 +82,52 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
             float z = values[2];
 
             float accelerationSquareRoot = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-            if (accelerationSquareRoot >= 2.5 & progressBar.getProgress() < 100) {
+            if (accelerationSquareRoot >= 2.5 && progressBar.getProgress() < 100 &&  timeLeftInMillis < 10000) {
                 progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
-                shakeCounter += shakePercantage;
-                Toast.makeText(getContext(), "SHAKE DETECTED", Toast.LENGTH_SHORT).show();
-                progressBar.setProgress(shakeCounter);
+                shakeCounter += randomShakePercantage;
+                progressBar.setProgress((int) shakeCounter);
                 textViewProgressbar.setText(shakeCounter + "%");
-                if (progressBar.getProgress() == 100) {
+                if (progressBar.getProgress() == 100 && timeLeftInMillis > 00000) {
                     progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
                     textViewProgressbar.setText("100%! CHALLENGE COMPLETED!!!");
+                    stopTimer();
                 }
             }
         }
+        if(textViewTimeLeft.getText().toString().equals("00") && progressBar.getProgress() < 100) {
+            onPause();
+            stopTimer();
+            textViewProgressbar.setText("MISSION FAILED! \nTRY AGAIN!");
+        }
+    }
+
+    public void startTimer() {
+        timer = new CountDownTimer(timeLeftInMillis, 500) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                timeLeftInMillis = millisUntilFinished;
+                int seconds = (int) (timeLeftInMillis / 1000) % 60;
+                String timeLeftFormatted = String.format(Locale.getDefault(), "%02d", seconds);
+                textViewTimeLeft.setText(timeLeftFormatted);
+            }
+
+            @Override
+            public void onFinish() {
+                isTimerRunning = false;
+            }
+        }.start();
+    }
+
+    public void stopTimer() {
+        timer.cancel();
+        isTimerRunning = false;
+    }
+
+    public void resetTimer() {
+        textViewTimeLeft.setText("10s");
+        timeLeftInMillis = START_TIME_IN_MILLIS;
+        isTimerRunning = false;
     }
 
     @Override
@@ -110,13 +157,18 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
         @Override
         public void onClick(View v) {
             if (btnStart.getText().equals("START")) {
+                onResume();
                 isButtonClicked = true;
                 btnStart.setText("STOP");
+                startTimer();
             } else if (btnStart.getText().equals("STOP")) {
                 isButtonClicked = false;
                 btnStart.setText("START");
                 progressBar.setProgress(0);
+                stopTimer();
+                resetTimer();
                 textViewProgressbar.setText("PRESS START TO PLAY!");
+                shakeCounter = 0;
             }
         }
     }

@@ -95,6 +95,7 @@ public class DiceFragment extends Fragment {
                     reset();
                 }
                 if (count == 3) {
+                    unregisterSensor();
                     tvResult.setText("Throwing dice");
 
                     loop = 0;
@@ -102,27 +103,27 @@ public class DiceFragment extends Fragment {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                         
+
                             mHandler.post(new Runnable() {
 
                                 @Override
                                 public void run() {
                                     Log.d(TAG, "run: LOOP");
-                                    ivd1.setImageResource(dice[rollDie()-1]);
-                                    ivd2.setImageResource(dice[rollDie()-1]);
-                                    ivd3.setImageResource(dice[rollDie()-1]);
-                                    ivd4.setImageResource(dice[rollDie()-1]);
-                               if(loop>=10){
-                                   setScores();
-                                   timer.cancel();
-                               }
+                                    ivd1.setImageResource(dice[rollDie() - 1]);
+                                    ivd2.setImageResource(dice[rollDie() - 1]);
+                                    ivd3.setImageResource(dice[rollDie() - 1]);
+                                    ivd4.setImageResource(dice[rollDie() - 1]);
+                                    if (loop >= 10) {
+                                        setScores();
+                                        registerSensor();
+                                        timer.cancel();
+                                    }
                                     loop++;
                                 }
                             });
 
                         }
                     }, 0, 250);
-
 
                 } else
 
@@ -137,7 +138,7 @@ public class DiceFragment extends Fragment {
         });
     }
 
-    private void setScores(){
+    private void setScores() {
 
         d1 = rollDie();
         d2 = rollDie();
@@ -175,15 +176,23 @@ public class DiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        registerSensor();
     }
 
     @Override
     public void onPause() {
-        mSensorManager.unregisterListener(mShakeDetector);
+        unregisterSensor();
         super.onPause();
     }
 
+    private void registerSensor() {
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+
+    }
+
+    private void unregisterSensor() {
+        mSensorManager.unregisterListener(mShakeDetector);
+    }
 
     public void reset() {
         tvInstructions.setText("Shake three times to throw your die");

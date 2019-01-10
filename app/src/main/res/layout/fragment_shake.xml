@@ -108,7 +108,7 @@
         android:layout_marginTop="50dp"
         android:background="@android:color/holo_blue_dark"
         android:text="START"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="@android:color/background_light"
         android:textSize="30sp"
         android:textStyle="bold" />
 

@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
-
 import methor.se.methor.R;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -35,9 +34,9 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
     private Button btnStart;
     private SensorManager sensorManager;
     private Sensor sensorAccelerometer;
-    private double shakeCounter = 0;
-    private int minRandomDouble = 0;
-    private int maxRandomDouble = 4;
+    private double shakeCounter = 1;
+    private int minRandomDouble = 2;
+    private int maxRandomDouble = 10;
     private int randomShakePercantage = ThreadLocalRandom.current().nextInt(minRandomDouble, maxRandomDouble);
     private CountDownTimer timer;
     private boolean isTimerRunning;
@@ -94,7 +93,7 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
                 }
             }
         }
-        if(textViewTimeLeft.getText().toString().equals("00") && progressBar.getProgress() < 100) {
+        if(textViewTimeLeft.getText().toString().equals("0s") && progressBar.getProgress() < 100) {
             onPause();
             stopTimer();
             textViewProgressbar.setText("MISSION FAILED! \nTRY AGAIN!");
@@ -105,13 +104,11 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
         timer = new CountDownTimer(timeLeftInMillis, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
-
                 timeLeftInMillis = millisUntilFinished;
                 int seconds = (int) (timeLeftInMillis / 1000) % 60;
-                String timeLeftFormatted = String.format(Locale.getDefault(), "%02d", seconds);
-                textViewTimeLeft.setText(timeLeftFormatted);
+                String timeLeftFormatted = String.format(Locale.getDefault(), "%01d", seconds);
+                textViewTimeLeft.setText(timeLeftFormatted+"s");
             }
-
             @Override
             public void onFinish() {
                 isTimerRunning = false;
@@ -159,9 +156,9 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
             if (btnStart.getText().equals("START")) {
                 onResume();
                 isButtonClicked = true;
-                btnStart.setText("STOP");
+                btnStart.setText("RESTART");
                 startTimer();
-            } else if (btnStart.getText().equals("STOP")) {
+            } else if (btnStart.getText().equals("RESTART")) {
                 isButtonClicked = false;
                 btnStart.setText("START");
                 progressBar.setProgress(0);

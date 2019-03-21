@@ -34,19 +34,19 @@
             android:id="@+id/ttsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="text to speech" />
+            android:text="Text To Speech" />
 
         <Button
             android:id="@+id/richButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="richy p" />
+            android:text="TILT" />
 
         <Button
             android:id="@+id/tedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ted" />
+            android:text="COMPASS" />
 
     </LinearLayout>
 

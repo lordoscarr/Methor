@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.Models.RPS;
 import methor.se.methor.R;
 
@@ -30,6 +31,8 @@ public class RPSFragment extends Fragment implements SensorEventListener {
     private TextView tvInstructions;
     private TextView tvResult;
     private TextView tvResultAi;
+    private MinigameActivity minigameActivity;
+    private int score;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +41,7 @@ public class RPSFragment extends Fragment implements SensorEventListener {
         initializeComponents(view);
         return view;
     }
+
 
     private void initializeComponents(View view) {
         //Get UI elements
@@ -58,19 +62,23 @@ public class RPSFragment extends Fragment implements SensorEventListener {
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    private void onShake(){
-        if(shakeCount < 3){
+    private void onShake() {
+        if (shakeCount < 3) {
             tvInstructions.setText("Shake " + (3 - shakeCount) + " more times");
             choiceLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             RPS.Choice myChoice = (RPS.Choice) myChoiceSpinner.getSelectedItem();
             RPS.GameInfo gameInfo = RPS.simulateGame(myChoice);
+
             Log.d(this.getTag(), gameInfo.toString());
             tvResult.setText(gameInfo.myChoice.getName());
             tvResultAi.setText(gameInfo.opponentChoice.getName());
             tvInstructions.setText(gameInfo.result.toString());
             choiceLayout.setVisibility(View.VISIBLE);
             shakeCount = 0;
+
+            if (gameInfo.result == RPS.Result.WIN)
+                minigameActivity.setScore(20);
         }
     }
 
@@ -134,5 +142,9 @@ public class RPSFragment extends Fragment implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
         Log.d(this.getTag(), "ACCURACY CHANGED " + i);
+    }
+
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity = minigameActivity;
     }
 }

@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
+
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -41,7 +43,14 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
     private CountDownTimer timer;
     private boolean isTimerRunning;
     private long timeLeftInMillis = START_TIME_IN_MILLIS;
+    private MinigameActivity minigameActivity;
 
+    private int score;
+
+
+    public int getScore() {
+        return score;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -90,6 +99,7 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
                     progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
                     textViewProgressbar.setText("100%! CHALLENGE COMPLETED!!!");
                     stopTimer();
+                    minigameActivity.setScore(20);
                 }
             }
         }
@@ -148,6 +158,10 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
         super.onDestroy();
         sensorManager = null;
         sensorAccelerometer = null;
+    }
+
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity=minigameActivity;
     }
 
     private class ButtonListener implements View.OnClickListener {

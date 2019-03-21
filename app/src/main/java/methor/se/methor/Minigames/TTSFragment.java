@@ -29,11 +29,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
 import static android.app.Activity.RESULT_OK;
 
 public class TTSFragment extends Fragment {
+    private MinigameActivity minigameActivity;
     private EditText etSayThis;
     private TextView tvSayThis;
     private TextView tvResult;
@@ -41,9 +43,16 @@ public class TTSFragment extends Fragment {
     private Intent speechRecognizerIntent;
     private ImageView iv;
     private String[] tongueTwisters = new String[]{"Sex laxar i en laxask", "Flyg fula fluga flyg och den fula flugan flög",
-                                                        "Packa pappas kappsäck", "Kvistfritt kvastskaft", "Typiskt västkustskt",
-                                            "Sju sjösjuka sjömän på sjunkande skeppet Shanghai sköttes av sju sköna sjuksköterskor"};
+            "Packa pappas kappsäck", "Kvistfritt kvastskaft", "Typiskt västkustskt",
+            "Sju sjösjuka sjömän på sjunkande skeppet Shanghai sköttes av sju sköna sjuksköterskor"};
     private String tongueTwister;
+
+    private int score;
+
+
+    public int getScore() {
+        return score;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,8 +76,8 @@ public class TTSFragment extends Fragment {
         iv = (ImageView) view.findViewById(R.id.ivMic);
     }
 
-    public void checkPermission(){
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+    public void checkPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             Log.i("INFO", "checkPermission: ");
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package: " + getActivity().getPackageName()));
             startActivity(intent);
@@ -82,19 +91,20 @@ public class TTSFragment extends Fragment {
         tvSayThis.setText(tongueTwister);
     }
 
-    public void checkSpeech(String speech){
-        if(speech.equals(tongueTwister.toLowerCase())){
+    public void checkSpeech(String speech) {
+        if (speech.equals(tongueTwister.toLowerCase())) {
             tvResult.setText("Good job");
+            minigameActivity.setScore(20);
         } else {
             tvResult.setText("You suck");
         }
     }
 
-    private void initSpeechRecognizer(){
+    private void initSpeechRecognizer() {
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity());
         speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getActivity().getPackageName());
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
@@ -147,11 +157,11 @@ public class TTSFragment extends Fragment {
         });
     }
 
-    private void registerListeners(){
+    private void registerListeners() {
         iv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()){
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
                         speechRecognizer.stopListening();
                         Log.d("INFO", "UP");
@@ -166,4 +176,7 @@ public class TTSFragment extends Fragment {
         });
     }
 
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity = minigameActivity;
+    }
 }

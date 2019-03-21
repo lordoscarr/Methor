@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Random;
 
+import methor.se.methor.Activities.MainActivity;
 import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
@@ -49,6 +50,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Random rand;
     private boolean markersAreSpawned = false;
     private Marker userMarker;
+
 
     private String[] game_IDs = {GameMenuFragment.RPS_ID, GameMenuFragment.TTS_ID,
             GameMenuFragment.COMPASS_ID, GameMenuFragment.RICH_ID,
@@ -94,9 +96,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     Intent intent = new Intent(getActivity().getApplicationContext(), MinigameActivity.class);
                     intent.putExtra("FragmentID", marker.getTitle());
-                    startActivity(intent);
+                    startActivityForResult(intent, MainActivity.REQUEST_SCORE);
                     marker.remove();
-                    createGameMarker(lastLocation, game_IDs[rand.nextInt(game_IDs.length)]);
+                  //  createGameMarker(lastLocation, game_IDs[rand.nextInt(game_IDs.length)]);
                 }
 
 

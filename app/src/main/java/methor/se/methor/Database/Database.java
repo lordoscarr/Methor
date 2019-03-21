@@ -12,7 +12,7 @@ public abstract class Database extends RoomDatabase {
 
     private static volatile Database INSTANCE;
 
-    static Database getDatabase(Activity activity) {
+   public static Database getDatabase(Activity activity) {
         if(INSTANCE == null){
             synchronized (Database.class) {
                 if(INSTANCE == null){

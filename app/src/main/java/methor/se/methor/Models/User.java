@@ -9,28 +9,28 @@ import android.support.annotation.NonNull;
 public class User {
     @PrimaryKey
     @NonNull
-    @ColumnInfo (name = "username")
+    @ColumnInfo(name = "username")
     private String username;
-    @ColumnInfo (name = "highscore")
-    private int highscore;
+    @ColumnInfo(name = "highscore")
+    private int highscore = 0;
 
-    public User(String username){
+    public User(String username) {
         this.username = username;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
-    public void setHighscore(int highscore){
+    public void setHighscore(int highscore) {
         this.highscore = highscore;
     }
 
-    public int getHighscore(){
+    public int getHighscore() {
         return highscore;
     }
 }

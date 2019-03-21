@@ -18,18 +18,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import methor.se.methor.Database.Database;
+import methor.se.methor.Database.DatabaseDaos;
 import methor.se.methor.Fragments.GameMenuFragment;
 import methor.se.methor.Fragments.MapFragment;
 import methor.se.methor.Fragments.ProfileFragment;
+import methor.se.methor.Models.User;
 import methor.se.methor.R;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-
     private Fragment fragment;
     private ProfileFragment profileFragment;
+    private DatabaseDaos databaseDaos;
+    private User user;
+
+    private int score;
+    public static final int REQUEST_SCORE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +52,18 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
+
+        setDatabase();
         setStartFragment();
         setNavigationListener();
 
 
+    }
+
+    private void setDatabase() {
+        if (databaseDaos == null) {
+            databaseDaos = new DatabaseDaos();
+        }
     }
 
     private void setStartFragment() {
@@ -120,9 +135,51 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(String username) {
         Log.d("MainActivity", "Username : " + username);
         fragment = new MapFragment();
+        setUser(username);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.main_container, fragment);
         ft.commit();
     }
 
+    private void setUser(String username) {
+        new Thread(() -> {
+
+            user = Database.getDatabase(this).userDao().checkUsername(username);
+
+            if (user == null) {
+                user = new User(username);
+                Database.getDatabase(this).userDao().insertUser(user);
+            }
+        }).start();
+
+
+    }
+
+    private void updateScore(int score) {
+        user.setHighscore(score);
+
+        new Thread(() -> {
+            Database.getDatabase(this).userDao().updateUser(user.getHighscore(), user.getUsername());
+        }).start();
+
+
+    }
+
+    private void printScore() {
+        new Thread(() -> {
+            Log.d("MainActivity", "printScore: " + Database.getDatabase(this).userDao().getScore(user.getUsername()));
+        }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (resultCode == RESULT_OK) {
+            score = data.getIntExtra("Score", 0);
+            updateScore(score);
+            printScore();
+
+        }
+    }
 }

@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
 public class DiceFragment extends Fragment {
@@ -45,6 +46,9 @@ public class DiceFragment extends Fragment {
     private Timer timer;
     private int loop;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private MinigameActivity minigameActivity;
+
+    private int score;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +60,10 @@ public class DiceFragment extends Fragment {
         initializeSensors();
         return view;
 
+    }
+
+    public int getScore() {
+        return score;
     }
 
     private void initializeDice() {
@@ -125,9 +133,7 @@ public class DiceFragment extends Fragment {
                         }
                     }, 0, 250);
 
-                } else
-
-                {
+                } else {
 
                     tvResult.setText("Shake " + count);
                     tvResultAi.setText("");
@@ -160,9 +166,12 @@ public class DiceFragment extends Fragment {
         if (computerScore >= userScore) {
             tvInstructions.setTextColor(Color.RED);
             tvInstructions.setText("YOU LOST!");
+            unregisterSensor();
         } else {
             tvInstructions.setText("YOU WON!");
             tvInstructions.setTextColor(Color.GREEN);
+            minigameActivity.setScore(20);
+            unregisterSensor();
         }
     }
 
@@ -201,6 +210,10 @@ public class DiceFragment extends Fragment {
         ivd2.setImageResource(R.drawable.dice_blank);
         ivd3.setImageResource(R.drawable.dice_blank);
         ivd4.setImageResource(R.drawable.dice_blank);
+    }
+
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity = minigameActivity;
     }
 
     private static class ShakeDetector implements SensorEventListener {
@@ -267,4 +280,5 @@ public class DiceFragment extends Fragment {
             }
         }
     }
+
 }

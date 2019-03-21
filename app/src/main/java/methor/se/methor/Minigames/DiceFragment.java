@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
 public class DiceFragment extends Fragment {
@@ -45,6 +46,9 @@ public class DiceFragment extends Fragment {
     private Timer timer;
     private int loop;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private MinigameActivity minigameActivity;
+
+    private int score;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +60,10 @@ public class DiceFragment extends Fragment {
         initializeSensors();
         return view;
 
+    }
+
+    public int getScore() {
+        return score;
     }
 
     private void initializeDice() {
@@ -95,6 +103,7 @@ public class DiceFragment extends Fragment {
                     reset();
                 }
                 if (count == 3) {
+                    unregisterSensor();
                     tvResult.setText("Throwing dice");
 
                     loop = 0;
@@ -102,20 +111,21 @@ public class DiceFragment extends Fragment {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                         
+
                             mHandler.post(new Runnable() {
 
                                 @Override
                                 public void run() {
                                     Log.d(TAG, "run: LOOP");
-                                    ivd1.setImageResource(dice[rollDie()-1]);
-                                    ivd2.setImageResource(dice[rollDie()-1]);
-                                    ivd3.setImageResource(dice[rollDie()-1]);
-                                    ivd4.setImageResource(dice[rollDie()-1]);
-                               if(loop>=10){
-                                   setScores();
-                                   timer.cancel();
-                               }
+                                    ivd1.setImageResource(dice[rollDie() - 1]);
+                                    ivd2.setImageResource(dice[rollDie() - 1]);
+                                    ivd3.setImageResource(dice[rollDie() - 1]);
+                                    ivd4.setImageResource(dice[rollDie() - 1]);
+                                    if (loop >= 10) {
+                                        setScores();
+                                        registerSensor();
+                                        timer.cancel();
+                                    }
                                     loop++;
                                 }
                             });
@@ -123,10 +133,7 @@ public class DiceFragment extends Fragment {
                         }
                     }, 0, 250);
 
-
-                } else
-
-                {
+                } else {
 
                     tvResult.setText("Shake " + count);
                     tvResultAi.setText("");
@@ -137,7 +144,7 @@ public class DiceFragment extends Fragment {
         });
     }
 
-    private void setScores(){
+    private void setScores() {
 
         d1 = rollDie();
         d2 = rollDie();
@@ -151,7 +158,7 @@ public class DiceFragment extends Fragment {
         d2 = rollDie();
 
         computerScore = d1 + d2;
-        result = "Computer threw " + computerScore;
+        result = "BOT threw " + computerScore;
         ivd3.setImageResource(dice[d1 - 1]);
         ivd4.setImageResource(dice[d2 - 1]);
         tvResultAi.setText(result);
@@ -159,9 +166,12 @@ public class DiceFragment extends Fragment {
         if (computerScore >= userScore) {
             tvInstructions.setTextColor(Color.RED);
             tvInstructions.setText("YOU LOST!");
+            unregisterSensor();
         } else {
             tvInstructions.setText("YOU WON!");
             tvInstructions.setTextColor(Color.GREEN);
+            minigameActivity.setScore(20);
+            unregisterSensor();
         }
     }
 
@@ -175,15 +185,23 @@ public class DiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        registerSensor();
     }
 
     @Override
     public void onPause() {
-        mSensorManager.unregisterListener(mShakeDetector);
+        unregisterSensor();
         super.onPause();
     }
 
+    private void registerSensor() {
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+
+    }
+
+    private void unregisterSensor() {
+        mSensorManager.unregisterListener(mShakeDetector);
+    }
 
     public void reset() {
         tvInstructions.setText("Shake three times to throw your die");
@@ -192,6 +210,10 @@ public class DiceFragment extends Fragment {
         ivd2.setImageResource(R.drawable.dice_blank);
         ivd3.setImageResource(R.drawable.dice_blank);
         ivd4.setImageResource(R.drawable.dice_blank);
+    }
+
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity = minigameActivity;
     }
 
     private static class ShakeDetector implements SensorEventListener {
@@ -258,4 +280,5 @@ public class DiceFragment extends Fragment {
             }
         }
     }
+
 }

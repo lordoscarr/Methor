@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Minigames.TedFragment">
+    tools:context=".Fragments.MapFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello Teddy" />
+        android:layout_height="match_parent"/>
+
 
 </FrameLayout>

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 
 import methor.se.methor.Fragments.GameMenuFragment;
 import methor.se.methor.Fragments.MapFragment;
+import methor.se.methor.Fragments.ProfileFragment;
 import methor.se.methor.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
 
     private Fragment fragment;
+    private ProfileFragment profileFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +45,21 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
+        setStartFragment();
         setNavigationListener();
 
 
+    }
+
+    private void setStartFragment() {
+        if (profileFragment == null) {
+            profileFragment = new ProfileFragment();
+            profileFragment.setActivity(this);
+        }
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, profileFragment);
+        ft.commit();
     }
 
 
@@ -53,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Log.d("MainActivity", "onNavigationItem: " + menuItem);
-                fragment = null;
+                fragment = profileFragment;
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_profile:
+                        fragment = profileFragment;
                         menuItem.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;
@@ -100,5 +116,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void startGame(String username) {
+        Log.d("MainActivity", "Username : " + username);
+        fragment = new MapFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment);
+        ft.commit();
+    }
 
 }

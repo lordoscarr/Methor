@@ -7,4 +7,6 @@
     <color name="grayWhite">#eeeeee</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="background">#3F51B5</color>
+    <color name="logo">#FDA88DD0</color>
 </resources>

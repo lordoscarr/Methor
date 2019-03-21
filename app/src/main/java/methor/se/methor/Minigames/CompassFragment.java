@@ -22,10 +22,11 @@ import methor.se.methor.R;
 public class CompassFragment extends Fragment implements SensorEventListener, View.OnClickListener {
     private Activity activity;
 
-    private enum Direction {
-        North, East, South, West;
-    }
+    private enum Direction {North, East, South, West}
     private Direction randomDirection, currentDirection;
+
+    private enum Result {Excellent, Good}
+    private Result result;
 
     private SensorManager sensorManager;
     private Sensor accelerometerSensor, magnetometerSensor;
@@ -39,7 +40,7 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
     private ArrayList<Float> lastDegrees = new ArrayList<>();
     private int finalDegree;
 
-    private ImageView ivArrow, ivCompass;
+    private ImageView ivArrow1, ivArrow2, ivCompass;
     private TextView tvMain, tvDone;
     private Button btnMain;
 
@@ -74,7 +75,11 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
     }
 
     private void initializeComponents(View view) {
-        ivArrow = view.findViewById(R.id.ivArrow);
+        ivArrow1 = view.findViewById(R.id.ivArrow1);
+
+        ivArrow2 = view.findViewById(R.id.ivArrow2);
+        ivArrow2.setVisibility(View.GONE);
+        ivArrow2.setRotation(180);
 
         ivCompass = view.findViewById(R.id.ivCompass);
         ivCompass.setVisibility(View.GONE);
@@ -111,19 +116,24 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
 
         finalDegree = (int) res / lastDegrees.size();
 
-        ivArrow.setVisibility(View.GONE);
+        ivArrow1.setVisibility(View.GONE);
         tvMain.setVisibility(View.GONE);
 
+        ivArrow2.setVisibility(View.VISIBLE);
+
         ivCompass.setRotation(-finalDegree);
+        setCompleteCompass(randomDirection);
         ivCompass.setVisibility(View.VISIBLE);
 
         currentDirection = getDirection(finalDegree);
         String text = "";
-        if(currentDirection == randomDirection)
-            text += "You won! \n";
+        if (currentDirection == randomDirection) {
+            result = getResult(finalDegree);
+            text += result.toString() + "! You won! \n";
+        }
         else
             text += "You lose! \n";
-        text += "You pointed towards "+ currentDirection +" ("+ finalDegree +"°)";
+        text += "You pointed towards " + currentDirection + " (" + finalDegree + "°)";
         tvDone.setText(text);
     }
 
@@ -174,12 +184,40 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
         }
     }
 
-    private Direction getDirection(float degree){
-        if(degree > 315 && degree <= 360
-                || degree > 0 && degree <= 45) return Direction.North;
-        else if(degree > 45  && degree <= 135) return Direction.East;
-        else if(degree > 135 && degree <= 225) return Direction.South;
-        else if(degree > 225 && degree <= 315) return Direction.West;
+    private void setCompleteCompass(Direction direction) {
+        if (direction == Direction.North)
+            ivCompass.setImageDrawable(activity.getDrawable(R.drawable.compass_complete_north));
+        else if (direction == Direction.East)
+            ivCompass.setImageDrawable(activity.getDrawable(R.drawable.compass_complete_east));
+        else if (direction == Direction.South)
+            ivCompass.setImageDrawable(activity.getDrawable(R.drawable.compass_complete_south));
+        else if (direction == Direction.West)
+            ivCompass.setImageDrawable(activity.getDrawable(R.drawable.compass_complete_west));
+    }
+
+    private Direction getDirection(float d) {
+        if (d > 315 && d <= 360
+                || d > 0 && d <= 45) return Direction.North;
+        else if (d > 45 && d <= 135) return Direction.East;
+        else if (d > 135 && d <= 225) return Direction.South;
+        else if (d > 225 && d <= 315) return Direction.West;
+        else return null;
+    }
+
+    private Result getResult(float d) {
+        //North
+        if (d > 315 && d <= 345 || d > 15 && d <= 45) return Result.Good;
+        else if (d > 345 && d <= 360 || d > 0 && d <= 15) return Result.Excellent;
+            //East
+        else if (d > 45 && d <= 75 || d > 105 && d <= 135) return Result.Good;
+        else if (d > 75 && d <= 105) return Result.Excellent;
+            //South
+        else if (d > 135 && d <= 165 || d > 195 && d <= 225) return Result.Good;
+        else if (d > 165 && d <= 195) return Result.Excellent;
+            //West
+        else if (d > 225 && d <= 255 || d > 285 && d <= 315) return Result.Good;
+        else if (d > 255 && d <= 285) return Result.Excellent;
+
         else return null;
     }
 

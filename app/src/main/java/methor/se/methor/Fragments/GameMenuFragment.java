@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import methor.se.methor.Activities.MainActivity;
 import methor.se.methor.Activities.MinigameActivity;
+import methor.se.methor.Models.RPS;
 import methor.se.methor.R;
 
 /**
@@ -24,6 +25,12 @@ public class GameMenuFragment extends Fragment {
     private Button ttsButton;
     private Button tedButton;
 
+    public static final String RPS_ID = "RPS";
+    public static final String DICE_ID = "DICE";
+    public static final String RICH_ID = "RICH";
+    public static final String SHAKE_ID = "SHAKE";
+    public static final String TTS_ID = "TTS";
+    public static final String COMPASS_ID = "COMPASS";
 
     public GameMenuFragment() {
         // Required empty public constructor
@@ -65,17 +72,17 @@ public class GameMenuFragment extends Fragment {
         public void onClick(View view) {
             String id = "";
             if (view.equals(rpsButton)) {
-                id = "RPS";
+                id = RPS_ID;
             } else if (view.equals(diceButton)) {
-                id = "DICE";
+                id = DICE_ID;
             } else if (view.equals(richButton)) {
-                id = "RICH";
+                id = RICH_ID;
             } else if (view.equals(shakeButton)) {
-                id = "SHAKE";
+                id = SHAKE_ID;
             } else if (view.equals(ttsButton)) {
-                id = "TTS";
+                id = TTS_ID;
             } else if (view.equals(tedButton)) {
-                id = "TED";
+                id = COMPASS_ID;
             }
 
             Intent intent = new Intent(getActivity().getApplicationContext(), MinigameActivity.class);

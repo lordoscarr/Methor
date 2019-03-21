@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -20,52 +21,90 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 import methor.se.methor.R;
 
+import static android.app.Activity.RESULT_OK;
+
 public class TTSFragment extends Fragment {
-    private EditText editText;
+    private EditText etSayThis;
+    private TextView tvSayThis;
+    private TextView tvResult;
     private SpeechRecognizer speechRecognizer;
     private Intent speechRecognizerIntent;
-    private Button btn;
-
+    private ImageView iv;
+    private String[] tongueTwisters = new String[]{"Sex laxar i en laxask", "Flyg fula fluga flyg och den fula flugan flög",
+                                                        "Packa pappas kappsäck", "Kvistfritt kvastskaft", "Typiskt västkustskt",
+                                            "Sju sjösjuka sjömän på sjunkande skeppet Shanghai sköttes av sju sköna sjuksköterskor"};
+    private String tongueTwister;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tts, container, false);
-       // checkPermission();
         initializeComponents(view);
-
-       // speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity);
-        speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        setRecognitionListener();
-        setOnTouchListener();
+        initializeToungeTwister();
+        checkPermission();
+        initSpeechRecognizer();
+        registerListeners();
 
         return view;
     }
 
+
     private void initializeComponents(View view) {
-        editText = (EditText) view.findViewById(R.id.editText);
-        btn = (Button) view.findViewById(R.id.button);
+        etSayThis = (EditText) view.findViewById(R.id.etSayThis);
+        tvSayThis = (TextView) view.findViewById(R.id.tvSayThis);
+        tvResult = (TextView) view.findViewById(R.id.tvResult);
+        iv = (ImageView) view.findViewById(R.id.ivMic);
     }
 
-    private void setRecognitionListener(){
+    public void checkPermission(){
+        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
+            Log.i("INFO", "checkPermission: ");
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package: " + getActivity().getPackageName()));
+            startActivity(intent);
+            getActivity().finish();
+        }
+    }
+
+    private void initializeToungeTwister() {
+        Random rand = new Random();
+        tongueTwister = tongueTwisters[rand.nextInt(6)];
+        tvSayThis.setText(tongueTwister);
+    }
+
+    public void checkSpeech(String speech){
+        if(speech.equals(tongueTwister.toLowerCase())){
+            tvResult.setText("Good job");
+        } else {
+            tvResult.setText("You suck");
+        }
+    }
+
+    private void initSpeechRecognizer(){
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(getActivity());
+        speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getActivity().getPackageName());
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
-
+                Log.i("INFO", "onReadyForSpeech: ");
             }
 
             @Override
             public void onBeginningOfSpeech() {
-
+                Log.i("INFO", "onBeginningOfSpeech: ");
             }
 
             @Override
@@ -90,10 +129,10 @@ public class TTSFragment extends Fragment {
 
             @Override
             public void onResults(Bundle results) {
-                ArrayList<String> list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                if(list != null){
-                    editText.setText(list.get(0));
-                }
+                ArrayList<String> result = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                Log.d("INFO", result.get(0));
+                Toast.makeText(getActivity(), result.get(0), Toast.LENGTH_SHORT).show();
+                checkSpeech(result.get(0));
             }
 
             @Override
@@ -108,37 +147,23 @@ public class TTSFragment extends Fragment {
         });
     }
 
-    private void setOnTouchListener(){
-        btn.setOnTouchListener(new View.OnTouchListener(){
-
+    private void registerListeners(){
+        iv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()){
+                switch (event.getAction()){
                     case MotionEvent.ACTION_UP:
                         speechRecognizer.stopListening();
-                        editText.setHint("You will see input here");
-                        break;
-
+                        Log.d("INFO", "UP");
+                        return true;
                     case MotionEvent.ACTION_DOWN:
-                        editText.setText("");
-                        editText.setHint("Listening. . . ");
                         speechRecognizer.startListening(speechRecognizerIntent);
-                        break;
+                        Log.d("INFO", "DOWN");
+                        return true;
                 }
                 return false;
             }
         });
     }
-
-
-    private void checkPermission(){
-        if(!(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)){
-            Log.d("ERROR", "CHECKPERMISSION FAILED");
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("Package: " + getActivity().getPackageName()));
-            startActivity(intent);
-            getActivity().finish();
-        }
-    }
-
 
 }

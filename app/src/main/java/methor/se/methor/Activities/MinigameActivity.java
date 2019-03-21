@@ -41,7 +41,7 @@ public class MinigameActivity extends AppCompatActivity {
             case "SHAKE":
                 fragment = new ShakeFragment();
                 break;
-            case "TED":
+            case "COMPASS":
                 fragment = new CompassFragment();
                 break;
 

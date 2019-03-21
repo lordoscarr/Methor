@@ -17,5 +17,8 @@ public class DatabaseDaos {
 
         @Insert
         void insertUser(User user);
+
+        @Query("SELECT * FROM user WHERE username IS (:username)")
+        User checkUsername(String username);
     }
 }

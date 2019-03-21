@@ -18,11 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 import methor.se.methor.Fragments.GameMenuFragment;
 import methor.se.methor.Fragments.MapFragment;
 import methor.se.methor.R;
@@ -33,23 +28,20 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
 
     private Fragment fragment;
-
-    private MapFragment mapFragment;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolBar);
+        toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
         setNavigationListener();
 
 
@@ -107,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }

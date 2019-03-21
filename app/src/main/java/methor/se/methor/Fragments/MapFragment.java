@@ -96,7 +96,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     intent.putExtra("FragmentID", marker.getTitle());
                     startActivity(intent);
                     marker.remove();
-                    createGameMarker(lastLocation,game_IDs[rand.nextInt(game_IDs.length)]);
+                    createGameMarker(lastLocation, game_IDs[rand.nextInt(game_IDs.length)]);
                 }
 
 
@@ -113,12 +113,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
                 final LatLng name = new LatLng(latitude, longitude);
-                userMarker = googleMap.addMarker(new MarkerOptions()
-                        .position(name)
-                        .title("User")
+                if (userMarker == null) {
+                    userMarker = googleMap.addMarker(new MarkerOptions()
+                            .position(name)
+                            .title("User")
 
 
-                );
+                    );
+                } else {
+                    userMarker.setPosition(name);
+                }
+
+
                 userMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.user));
 
 

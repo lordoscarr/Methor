@@ -152,7 +152,7 @@ public class DiceFragment extends Fragment {
         d2 = rollDie();
 
         computerScore = d1 + d2;
-        result = "Computer threw " + computerScore;
+        result = "BOT threw " + computerScore;
         ivd3.setImageResource(dice[d1 - 1]);
         ivd4.setImageResource(dice[d2 - 1]);
         tvResultAi.setText(result);

@@ -5,100 +5,135 @@
     android:id="@+id/clHead"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Minigames.DiceFragment">
+    tools:context=".Minigames.DiceFragment"
+    android:background="@color/black">
 
     <!-- TODO: Update blank fragment layout -->
-    <ImageView
-        android:id="@+id/ivd1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="124dp"
-        android:layout_marginLeft="124dp"
-        android:layout_marginTop="120dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/dice_blank"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
-
-    <ImageView
-        android:id="@+id/ivd2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/dice_blank"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toEndOf="@+id/ivd1"
-        app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
 
     <TextView
         android:id="@+id/tvInstructions"
         android:layout_width="458dp"
         android:layout_height="54dp"
+        android:layout_marginTop="188dp"
         android:gravity="center_horizontal"
         android:text="Get the higher score\nShake three times to throw your dice"
+        android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.234" />
+        app:layout_constraintTop_toBottomOf="@+id/tvResult">
+
+        <ImageView
+            android:id="@+id/ivd2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dice_blank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.125"
+            app:layout_constraintStart_toEndOf="@+id/ivd1"
+            app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
+
+        <ImageView
+            android:id="@+id/ivd1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dice_blank"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <ImageView
+            android:id="@+id/ivd3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0"
+            android:scaleType="fitXY"
+            android:src="@drawable/dice_blank"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvResult" />
+
+        <ImageView
+            android:id="@+id/ivd4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/dice_blank"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="12"
+            app:layout_constraintStart_toEndOf="@+id/ivd1"
+            app:layout_constraintTop_toBottomOf="@+id/tvResult" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvResult"
-        android:layout_width="684dp"
+        android:layout_width="0dp"
         android:layout_height="46dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
+        android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivd1" />
-
-    <ImageView
-        android:id="@+id/ivd3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="124dp"
-        android:layout_marginLeft="124dp"
-        android:layout_marginTop="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/dice_blank"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvResult" />
-
-    <ImageView
-        android:id="@+id/ivd4"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/dice_blank"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toEndOf="@+id/ivd1"
-        app:layout_constraintTop_toBottomOf="@+id/tvResult" />
+        app:layout_constraintTop_toBottomOf="@+id/tvInstructions" />
 
     <TextView
         android:id="@+id/tvResultAi"
-        android:layout_width="684dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text=" "
+        android:textColor="@color/white"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivd3" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 </android.support.constraint.ConstraintLayout>

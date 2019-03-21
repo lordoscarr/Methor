@@ -17,15 +17,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
 public class CompassFragment extends Fragment implements SensorEventListener, View.OnClickListener {
     private Activity activity;
+    private MinigameActivity minigameActivity;
 
     private enum Direction {North, East, South, West}
+
     private Direction randomDirection, currentDirection;
 
     private enum Result {Excellent, Good}
+
     private Result result;
 
     private SensorManager sensorManager;
@@ -43,6 +47,8 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
     private ImageView ivArrow1, ivArrow2, ivCompass;
     private TextView tvMain, tvDone;
     private Button btnMain;
+
+    private int score;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,11 +136,16 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
         if (currentDirection == randomDirection) {
             result = getResult(finalDegree);
             text += result.toString() + "! You won! \n";
-        }
-        else
+
+            if (result == Result.Excellent) {
+                minigameActivity.setScore(20);
+            } else minigameActivity.setScore(10);
+
+        } else
             text += "You lose! \n";
         text += "You pointed towards " + currentDirection + " (" + finalDegree + "°)";
         tvDone.setText(text);
+
     }
 
     @Override
@@ -251,4 +262,7 @@ public class CompassFragment extends Fragment implements SensorEventListener, Vi
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity = minigameActivity;
+    }
 }

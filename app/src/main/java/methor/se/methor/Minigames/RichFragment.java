@@ -23,9 +23,10 @@ import android.widget.Toast;
 
 import java.util.Random;
 
+import methor.se.methor.Activities.MinigameActivity;
 import methor.se.methor.R;
 
-public class RichFragment extends Fragment implements SensorEventListener{
+public class RichFragment extends Fragment implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -59,6 +60,7 @@ public class RichFragment extends Fragment implements SensorEventListener{
     private final int[] targets = {LEFT, RIGHT, DOWN, UP, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT};
     private final String[] targetStrings = {"Left", "Right", "Down", "Up", "Up Left", "Up Right", "Down Left", "Down Right"};
 
+    private MinigameActivity minigameActivity;
     Random random;
 
 
@@ -71,7 +73,11 @@ public class RichFragment extends Fragment implements SensorEventListener{
         return view;
     }
 
-    private void initializeComponents(View view){
+    public int getScore() {
+        return score;
+    }
+
+    private void initializeComponents(View view) {
         random = new Random();
         tvTarget = view.findViewById(R.id.tvTarget);
         tvScore = view.findViewById(R.id.tvScore);
@@ -81,7 +87,7 @@ public class RichFragment extends Fragment implements SensorEventListener{
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timer = new CountDownTimer((long)(GAME_TIME * 1000), 1000) {
+                timer = new CountDownTimer((long) (GAME_TIME * 1000), 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
 
@@ -94,11 +100,8 @@ public class RichFragment extends Fragment implements SensorEventListener{
                             @Override
                             public void run() {
                                 tvResult.setText("You scored " + score + " points!");
-                                buttonStart.setVisibility(View.VISIBLE);
                                 tvTarget.setText("");
-                                score = 0;
-                                tvScore.setText(0+"");
-                                showInstructions(true);
+                                minigameActivity.setScore(score);
                             }
                         });
                     }
@@ -110,7 +113,7 @@ public class RichFragment extends Fragment implements SensorEventListener{
             }
         });
         sensorManager = (SensorManager) getActivity().getSystemService(getContext().SENSOR_SERVICE);
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
 
@@ -131,31 +134,31 @@ public class RichFragment extends Fragment implements SensorEventListener{
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(gameRunning){
+        if (gameRunning) {
             float x = event.values[0];
             float y = event.values[1];
             float tilt = 0;
 
-            if(x > TILT_THRESHOLD){
+            if (x > TILT_THRESHOLD) {
                 tilt += LEFT;
-            } else if(x < -TILT_THRESHOLD){
+            } else if (x < -TILT_THRESHOLD) {
                 tilt += RIGHT;
             }
 
-            if(y > TILT_THRESHOLD){
+            if (y > TILT_THRESHOLD) {
                 tilt += DOWN;
-            } else if(y < -TILT_THRESHOLD){
+            } else if (y < -TILT_THRESHOLD) {
                 tilt += UP;
             }
 
-            if(tilt == target){
-                if(wasOnTarget){
+            if (tilt == target) {
+                if (wasOnTarget) {
                     long delta = event.timestamp - lastTime;
                     tiltTimer += delta;
                 }
-                if(tiltTimer > TILT_TIME){
+                if (tiltTimer > TILT_TIME) {
                     score++;
-                    tvScore.setText(score+"");
+                    tvScore.setText(score + "");
                     randomizeTarget();
                     tiltTimer = 0;
                 }
@@ -169,9 +172,9 @@ public class RichFragment extends Fragment implements SensorEventListener{
 
     }
 
-    private void randomizeTarget(){
+    private void randomizeTarget() {
         int index = random.nextInt(targets.length);
-        while(target == targets[index]){
+        while (target == targets[index]) {
             index = random.nextInt(targets.length);
         }
         target = targets[index];
@@ -183,11 +186,15 @@ public class RichFragment extends Fragment implements SensorEventListener{
 
     }
 
-    private void showInstructions(boolean show){
-        if(show){
+    private void showInstructions(boolean show) {
+        if (show) {
             tvInstructions.setVisibility(View.VISIBLE);
         } else {
             tvInstructions.setVisibility(View.INVISIBLE);
         }
+    }
+
+    public void setMinigameActivity(MinigameActivity minigameActivity) {
+        this.minigameActivity = minigameActivity;
     }
 }

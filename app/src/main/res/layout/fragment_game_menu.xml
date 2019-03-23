@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.GameMenuFragment">
+    tools:context=".Fragments.GameMenuFragment"
+    android:background="@color/colorAccent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,37 +17,44 @@
             android:id="@+id/rpsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rock Paper Scissors" />
-
+            android:text="Rock Paper Scissors" android:background="@android:color/holo_blue_bright"
+            android:layout_marginTop="5dp"
+            android:textColor="#fff"/>
         <Button
             android:id="@+id/diceButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="DICE" />
-
+            android:text="DICE" android:background="@android:color/holo_blue_bright"
+            android:layout_marginTop="5dp"
+            android:textColor="#fff"/>
         <Button
             android:id="@+id/shakeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SHAKE" />
-
+            android:text="SHAKE" android:background="@android:color/holo_blue_bright"
+            android:layout_marginTop="5dp"
+            android:textColor="#fff"/>
         <Button
             android:id="@+id/ttsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Text To Speech" />
-
+            android:text="Text To Speech" android:background="@android:color/holo_blue_bright"
+            android:layout_marginTop="5dp"
+            android:textColor="#fff"/>
         <Button
             android:id="@+id/richButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TILT" />
-
+            android:text="TILT" android:background="@android:color/holo_blue_bright"
+            android:layout_marginTop="5dp"
+            android:textColor="#fff"/>
         <Button
             android:id="@+id/tedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="COMPASS" />
+            android:text="COMPASS" android:background="@android:color/holo_blue_bright"
+            android:layout_marginTop="5dp"
+            android:textColor="#fff"/>
 
     </LinearLayout>
 

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import methor.se.methor.Minigames.DiceFragment;
 import methor.se.methor.Minigames.RPSFragment;
@@ -65,6 +66,7 @@ public class MinigameActivity extends AppCompatActivity {
 
     public void setScore(int score) {
         this.score = score;
+        Log.d("set score", score +"");
 
     }
 
@@ -77,6 +79,4 @@ public class MinigameActivity extends AppCompatActivity {
         }
         finish();
     }
-
-
 }

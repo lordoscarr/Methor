@@ -45,7 +45,7 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
     private long timeLeftInMillis = START_TIME_IN_MILLIS;
     private MinigameActivity minigameActivity;
 
-    private int score;
+    private int score = 10;
 
 
     public int getScore() {
@@ -170,16 +170,10 @@ public class ShakeFragment extends Fragment implements SensorEventListener {
             if (btnStart.getText().equals("START")) {
                 onResume();
                 isButtonClicked = true;
-                btnStart.setText("RESTART");
+                btnStart.setText("QUIT");
                 startTimer();
-            } else if (btnStart.getText().equals("RESTART")) {
-                isButtonClicked = false;
-                btnStart.setText("START");
-                progressBar.setProgress(0);
-                stopTimer();
-                resetTimer();
-                textViewProgressbar.setText("PRESS START TO PLAY!");
-                shakeCounter = 0;
+            } else if (btnStart.getText().equals("QUIT")) {
+                getActivity().onBackPressed();
             }
         }
     }

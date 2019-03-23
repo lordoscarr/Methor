@@ -45,9 +45,11 @@ public class TTSFragment extends Fragment {
     private String[] tongueTwisters = new String[]{"Sex laxar i en laxask", "Flyg fula fluga flyg och den fula flugan flög",
             "Packa pappas kappsäck", "Kvistfritt kvastskaft", "Typiskt västkustskt",
             "Sju sjösjuka sjömän på sjunkande skeppet Shanghai sköttes av sju sköna sjuksköterskor"};
+    private String[] easyWords = new String[]{"Grotta", "Ko", "Pirat", "Rolig", "Tjock", "Potatismos"};
     private String tongueTwister;
-
     private int score;
+
+    private boolean easyWord = false;
 
 
     public int getScore() {
@@ -71,9 +73,13 @@ public class TTSFragment extends Fragment {
 
     private void initializeComponents(View view) {
         etSayThis = (EditText) view.findViewById(R.id.etSayThis);
+        etSayThis.setEnabled(false);
         tvSayThis = (TextView) view.findViewById(R.id.tvSayThis);
         tvResult = (TextView) view.findViewById(R.id.tvResult);
+        tvResult.setText("");
         iv = (ImageView) view.findViewById(R.id.ivMic);
+
+        easyWord = false;
     }
 
     public void checkPermission() {
@@ -91,12 +97,30 @@ public class TTSFragment extends Fragment {
         tvSayThis.setText(tongueTwister);
     }
 
+    private void initializeEasyWords(){
+        Random rand = new Random();
+        tongueTwister = easyWords[rand.nextInt(5)];
+        tvSayThis.setText(tongueTwister);
+    }
+
     public void checkSpeech(String speech) {
-        if (speech.equals(tongueTwister.toLowerCase())) {
-            tvResult.setText("Good job");
+        Log.d("INFO", ""+easyWord);
+        Log.d("INFO", ""+speech.toLowerCase().equals(tongueTwister.toLowerCase()));
+        Log.d("INFO", "Tal: " + speech + " , TongueTwister: " + tongueTwister);
+        if (speech.toLowerCase().equals(tongueTwister.toLowerCase()) && !easyWord) {
+            etSayThis.setText(speech);
+            tvResult.setText("You made it. You get 20 points to highscore");
             minigameActivity.setScore(20);
-        } else {
-            tvResult.setText("You suck");
+        } else if(speech.toLowerCase().equals(tongueTwister.toLowerCase()) && easyWord) {
+            //Sätter första bokstäven till stor bokstav så den ser ut som den ursprungliga.
+            String output = speech.substring(0, 1).toUpperCase() + speech.substring(1);
+            etSayThis.setText(output);
+            tvResult.setText("You made it on easier level, you get 10 points to highscore");
+            minigameActivity.setScore(10);
+        } else{
+            easyWord = true;
+            tvResult.setText("Lets try again");
+            initializeEasyWords();
         }
     }
 
@@ -178,5 +202,13 @@ public class TTSFragment extends Fragment {
 
     public void setMinigameActivity(MinigameActivity minigameActivity) {
         this.minigameActivity = minigameActivity;
+    }
+
+    public boolean isEasyWord() {
+        return easyWord;
+    }
+
+    public void setEasyWord(boolean easyWord) {
+        this.easyWord = easyWord;
     }
 }

@@ -123,7 +123,7 @@ public class DiceFragment extends Fragment {
                                     ivd4.setImageResource(dice[rollDie() - 1]);
                                     if (loop >= 10) {
                                         setScores();
-                                        registerSensor();
+                                      //  registerSensor();
                                         timer.cancel();
                                     }
                                     loop++;
@@ -163,15 +163,20 @@ public class DiceFragment extends Fragment {
         ivd4.setImageResource(dice[d2 - 1]);
         tvResultAi.setText(result);
 
-        if (computerScore >= userScore) {
+        if (computerScore > userScore) {
             tvInstructions.setTextColor(Color.RED);
             tvInstructions.setText("YOU LOST!");
-            unregisterSensor();
-        } else {
+            tvInstructions.setTextSize(30);
+        } else if(computerScore < userScore) {
             tvInstructions.setText("YOU WON!");
             tvInstructions.setTextColor(Color.GREEN);
+            tvInstructions.setTextSize(30);
             minigameActivity.setScore(20);
-            unregisterSensor();
+        }else{
+            tvInstructions.setText("DRAW!");
+            tvInstructions.setTextColor(Color.WHITE);
+            tvInstructions.setTextSize(30);
+            registerSensor();
         }
     }
 
@@ -205,7 +210,8 @@ public class DiceFragment extends Fragment {
 
     public void reset() {
         tvInstructions.setText("Shake three times to throw your die");
-        tvInstructions.setTextColor(Color.BLACK);
+        tvInstructions.setTextSize(18);
+        tvInstructions.setTextColor(Color.WHITE);
         ivd1.setImageResource(R.drawable.dice_blank);
         ivd2.setImageResource(R.drawable.dice_blank);
         ivd3.setImageResource(R.drawable.dice_blank);

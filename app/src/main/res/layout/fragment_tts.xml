@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Minigames.TTSFragment">
+    tools:context=".Minigames.TTSFragment"
+    android:background="@color/background">
 
 
     <LinearLayout
@@ -16,9 +17,12 @@
         <TextView
             android:id="@+id/tvSayThis"
             android:layout_width="match_parent"
-            android:layout_height="89dp"
+            android:layout_height="171dp"
             android:text="TextView"
-            android:textSize="14pt" />
+            android:textSize="14pt"
+            android:layout_marginTop="40dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"/>
 
         <EditText
             android:id="@+id/etSayThis"
@@ -26,14 +30,23 @@
             android:layout_height="85dp"
             android:ems="10"
             android:hint="Your voice input..."
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"/>
 
         <TextView
             android:id="@+id/tvResult"
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="149dp"
             android:text="TextView"
-            android:textSize="14pt" />
+            android:textSize="14pt"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/alfa_slab_one"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
     <ImageView

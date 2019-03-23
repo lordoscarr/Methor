@@ -48,6 +48,10 @@ public class ProfileFragment extends Fragment {
         btnStart.setOnClickListener((View v) -> {
             activity.startGame(etUsername.getText().toString());
         });
+
+        btnHighscore.setOnClickListener((View v) -> {
+            activity.showHighscore();
+        });
     }
 
     public void setActivity(MainActivity activity) {

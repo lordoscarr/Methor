@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Minigames.RPSFragment">
+    tools:context=".Minigames.RPSFragment"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="YOUR CHOICE"
-            android:textColor="@color/colorOrange"
+            android:textColor="@color/colorAccent"
             android:textStyle="bold"
             android:layout_marginTop="40dp"/>
 
@@ -76,7 +77,8 @@
             android:text="SHAKE TO PLAY"
             android:textSize="26dp"
             android:textStyle="bold"
-            android:textColor="@android:color/holo_green_dark"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:layout_marginHorizontal="10dp"
             android:id="@+id/tvInstructions"
             />

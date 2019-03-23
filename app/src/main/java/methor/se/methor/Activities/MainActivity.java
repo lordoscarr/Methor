@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import methor.se.methor.Database.Database;
 import methor.se.methor.Database.DatabaseDaos;
 import methor.se.methor.Fragments.GameMenuFragment;
+import methor.se.methor.Fragments.HighscoreFragment;
 import methor.se.methor.Fragments.MapFragment;
 import methor.se.methor.Fragments.ProfileFragment;
 import methor.se.methor.Models.User;
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_highscore:
                         menuItem.setChecked(true);
+                        showHighscore();
                         drawerLayout.closeDrawers();
                         break;
 
@@ -152,8 +154,6 @@ public class MainActivity extends AppCompatActivity {
                 Database.getDatabase(this).userDao().insertUser(user);
             }
         }).start();
-
-
     }
 
     private void updateScore(int score) {
@@ -161,12 +161,22 @@ public class MainActivity extends AppCompatActivity {
 
         new Thread(() -> {
             Database.getDatabase(this).userDao().updateUser(user.getHighscore(), user.getUsername());
+            Log.d("Database size", Database.getDatabase(this).userDao().getAllUsers().size() + " users");
         }).start();
 
 
     }
 
+    public void showHighscore(){
+        fragment = new HighscoreFragment();
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.main_container, fragment);
+        ft.commit();
+    }
+
     private void printScore() {
+
         new Thread(() -> {
             Log.d("MainActivity", "printScore: " + Database.getDatabase(this).userDao().getScore(user.getUsername()));
         }).start();

@@ -66,16 +66,16 @@ public class RPSFragment extends Fragment implements SensorEventListener {
         if (shakeCount < 3) {
             tvInstructions.setText("Shake " + (3 - shakeCount) + " more times");
             choiceLayout.setVisibility(View.GONE);
-        } else {
+        } else if (shakeCount == 3){
             RPS.Choice myChoice = (RPS.Choice) myChoiceSpinner.getSelectedItem();
             RPS.GameInfo gameInfo = RPS.simulateGame(myChoice);
 
             Log.d(this.getTag(), gameInfo.toString());
             tvResult.setText(gameInfo.myChoice.getName());
             tvResultAi.setText(gameInfo.opponentChoice.getName());
-            tvInstructions.setText(gameInfo.result.toString());
+            tvInstructions.setText(gameInfo.result.toString() + ", PRESS BACK TO MOVE ON");
             choiceLayout.setVisibility(View.VISIBLE);
-            shakeCount = 0;
+            //shakeCount = 0;
 
             if (gameInfo.result == RPS.Result.WIN)
                 minigameActivity.setScore(20);

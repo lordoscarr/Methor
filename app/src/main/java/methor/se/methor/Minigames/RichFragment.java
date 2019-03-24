@@ -100,6 +100,7 @@ public class RichFragment extends Fragment implements SensorEventListener {
                             @Override
                             public void run() {
                                 tvResult.setText("You scored " + score + " points!");
+                                tvScore.setText("");
                                 tvTarget.setText("");
                                 minigameActivity.setScore(score);
                             }

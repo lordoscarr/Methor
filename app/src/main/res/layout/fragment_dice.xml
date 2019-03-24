@@ -5,8 +5,8 @@
     android:id="@+id/clHead"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Minigames.DiceFragment"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".Minigames.DiceFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

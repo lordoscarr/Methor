@@ -2,11 +2,11 @@
 <resources>
     <color name="colorPrimary">#ff0000</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#d81b60</color>
     <color name="colorOrange">#df7116</color>
     <color name="grayWhite">#eeeeee</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="background">#3F51B5</color>
-    <color name="logo">#FDA88DD0</color>
+    <color name="background">#3f51b5</color>
+    <color name="logo">#fda88dd0</color>
 </resources>
